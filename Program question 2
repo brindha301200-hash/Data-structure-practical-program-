@@ -1,0 +1,85 @@
+Program :
+cart = []
+
+while True:
+    print("\n1.Add Item")
+    print("2.Remove Item")
+    print("3.Update Quantity")
+    print("4.Display Bill")
+    print("5.Exit")
+
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        name = input("Enter Item Name: ")
+        price = float(input("Enter Price: "))
+        qty = int(input("Enter Quantity: "))
+        cart.append([name, price, qty])
+        print("Item added to cart")
+
+    elif choice == 2:
+        name = input("Enter Item Name to Remove: ")
+        for item in cart:
+            if item[0] == name:
+                cart.remove(item)
+                print("Item removed")
+                break
+
+    elif choice == 3:
+        name = input("Enter Item Name to Update: ")
+        for item in cart:
+            if item[0] == name:
+                qty = int(input("Enter New Quantity: "))
+                item[2] = qty
+                print("Quantity updated")
+                break
+
+    elif choice == 4:
+        total = 0
+        print("\nItems in Cart")
+        for item in cart:
+            amount = item[1] * item[2]
+            total += amount
+            print("Item:", item[0], "Price:", item[1], "Qty:", item[2], "Amount:", amount)
+        print("Total Bill =", total)
+
+    elif choice == 5:
+        break
+Sample Output:
+
+1.Add Item
+2.Remove Item
+3.Update Quantity
+4.Display Bill
+5.Exit
+
+Enter choice: 1
+Enter Item Name: Rice
+Enter Price: 50
+Enter Quantity: 2
+Item added to cart
+
+Enter choice: 1
+Enter Item Name: Milk
+Enter Price: 30
+Enter Quantity: 3
+Item added to cart
+
+Enter choice: 4
+
+Items in Cart
+Item: Rice Price: 50 Qty: 2 Amount: 100
+Item: Milk Price: 30 Qty: 3 Amount: 90
+Total Bill = 190
+
+Enter choice: 3
+Enter Item Name to Update: Milk
+Enter New Quantity: 5
+Quantity updated
+
+Enter choice: 4
+
+Items in Cart
+Item: Rice Price: 50 Qty: 2 Amount: 100
+Item: Milk Price: 30 Qty: 5 Amount: 150
+Total Bill = 250
