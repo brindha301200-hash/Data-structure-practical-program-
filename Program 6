@@ -1,0 +1,168 @@
+6️⃣ AVL Tree (Insertion & Deletion)
+Program
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1
+class AVLTree:
+    def get_height(self, root):
+        if not root:
+            return 0
+        return root.height
+    def get_balance(self, root):
+        if not root:
+            return 0
+        return self.get_height(root.left) - self.get_height(root.right)
+    def right_rotate(self, y):
+        x = y.left
+        T2 = x.right
+        x.right = y
+        y.left = T2
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        x.height = 1 + max(self.get_height(x.left), self.get_height(x.right))
+        return x
+    def left_rotate(self, x):
+        y = x.right
+        T2 = y.left
+        y.left = x
+        x.right = T2
+        x.height = 1 + max(self.get_height(x.left), self.get_height(x.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+
+    def insert(self, root, key):
+
+        if not root:
+            return Node(key)
+        elif key < root.key:
+            root.left = self.insert(root.left, key)
+        else:
+            root.right = self.insert(root.right, key)
+
+        root.height = 1 + max(self.get_height(root.left),
+                              self.get_height(root.right))
+
+        balance = self.get_balance(root)
+
+        if balance > 1 and key < root.left.key:
+            return self.right_rotate(root)
+
+        if balance < -1 and key > root.right.key:
+            return self.left_rotate(root)
+
+        if balance > 1 and key > root.left.key:
+            root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
+
+        if balance < -1 and key < root.right.key:
+            root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
+
+        return root
+
+    def min_value_node(self, root):
+        current = root
+        while current.left:
+            current = current.left
+        return current
+
+    def delete(self, root, key):
+
+        if not root:
+            return root
+
+        elif key < root.key:
+            root.left = self.delete(root.left, key)
+
+        elif key > root.key:
+            root.right = self.delete(root.right, key)
+
+        else:
+            if root.left is None:
+                return root.right
+
+            elif root.right is None:
+                return root.left
+
+            temp = self.min_value_node(root.right)
+            root.key = temp.key
+            root.right = self.delete(root.right, temp.key)
+
+        if not root:
+            return root
+
+        root.height = 1 + max(self.get_height(root.left),
+                              self.get_height(root.right))
+
+        balance = self.get_balance(root)
+
+        if balance > 1 and self.get_balance(root.left) >= 0:
+            return self.right_rotate(root)
+
+        if balance > 1 and self.get_balance(root.left) < 0:
+            root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
+
+        if balance < -1 and self.get_balance(root.right) <= 0:
+            return self.left_rotate(root)
+
+        if balance < -1 and self.get_balance(root.right) > 0:
+            root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
+
+        return root
+
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.key, end=" ")
+            self.inorder(root.right)
+
+
+tree = AVLTree()
+root = None
+
+while True:
+    print("\n1.Insert Account")
+    print("2.Delete Account")
+    print("3.Display Accounts")
+    print("4.Exit")
+
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        acc = int(input("Enter Account Number: "))
+        root = tree.insert(root, acc)
+
+    elif choice == 2:
+        acc = int(input("Enter Account Number to delete: "))
+        root = tree.delete(root, acc)
+
+    elif choice == 3:
+        print("Customer Accounts (Sorted):")
+        tree.inorder(root)
+        print()
+
+    elif choice == 4:
+        break
+
+    else:
+        print("Invalid choice")
+
+Example Output
+1.Insert Account
+2.Delete Account
+3.Display Accounts
+4.Exit
+
+Enter choice: 1
+Enter Account Number: 105
+
+Enter choice: 1
+Enter Account Number: 101
+
+Enter choice: 3
+Customer Accounts (Sorted):
+101 105
