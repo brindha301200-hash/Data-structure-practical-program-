@@ -1,0 +1,208 @@
+1️⃣ Implementation Using Array
+
+Program (Python)
+
+students = []
+while True:
+    print("\n1.Insert Beginning")
+    print("2.Insert End")
+    print("3.Insert Position")
+    print("4.Delete")
+    print("5.Search")
+    print("6.Display")
+    print("7.Exit")
+
+    ch = int(input("Enter Choice: "))
+
+    if ch == 1:
+        sid = int(input("Enter Student ID: "))
+        name = input("Enter Name: ")
+        marks = int(input("Enter Marks: "))
+        students.insert(0,[sid,name,marks])
+
+    elif ch == 2:
+        sid = int(input("Enter Student ID: "))
+        name = input("Enter Name: ")
+        marks = int(input("Enter Marks: "))
+        students.append([sid,name,marks])
+
+    elif ch == 3:
+        pos = int(input("Enter Position: "))
+        sid = int(input("Enter Student ID: "))
+        name = input("Enter Name: ")
+        marks = int(input("Enter Marks: "))
+        students.insert(pos-1,[sid,name,marks])
+
+    elif ch == 4:
+        sid = int(input("Enter ID to Delete: "))
+        for s in students:
+            if s[0] == sid:
+                students.remove(s)
+                print("Record Deleted")
+
+    elif ch == 5:
+        sid = int(input("Enter ID to Search: "))
+        for s in students:
+            if s[0] == sid:
+                print("Record Found:",s)
+
+    elif ch == 6:
+        print("Student Records")
+        for s in students:
+            print("ID:",s[0],"Name:",s[1],"Marks:",s[2])
+
+    elif ch == 7:
+        break
+
+Sample Output
+
+
+1.Insert Beginning
+2.Insert End
+3.Insert Position
+4.Delete
+5.Search
+6.Display
+7.Exit
+
+Enter Choice: 2
+Enter Student ID: 101
+Enter Name: Ravi
+Enter Marks: 85
+
+Enter Choice: 2
+Enter Student ID: 102
+Enter Name: Anu
+Enter Marks: 90
+
+Enter Choice: 6
+Student Records
+ID: 101 Name: Ravi Marks: 85
+ID: 102 Name: Anu Marks: 90
+
+Enter Choice: 5
+Enter ID to Search: 101
+Record Found: [101, 'Ravi', 85]
+
+2️⃣ Implementation Using Singly Linked List
+
+class Node:
+    def __init__(self,sid,name,marks):
+        self.sid=sid
+        self.name=name
+        self.marks=marks
+        self.next=None
+
+class StudentList:
+    def __init__(self):
+        self.head=None
+
+    def insert_begin(self,sid,name,marks):
+        new=Node(sid,name,marks)
+        new.next=self.head
+        self.head=new
+
+    def insert_end(self,sid,name,marks):
+        new=Node(sid,name,marks)
+        if self.head is None:
+            self.head=new
+            return
+        temp=self.head
+        while temp.next:
+            temp=temp.next
+        temp.next=new
+
+    def display(self):
+        temp=self.head
+        while temp:
+            print(temp.sid,temp.name,temp.marks)
+            temp=temp.next
+
+    def search(self,sid):
+        temp=self.head
+        while temp:
+            if temp.sid==sid:
+                print("Record Found:",temp.sid,temp.name,temp.marks)
+                return
+            temp=temp.next
+        print("Record Not Found")
+
+    def delete(self,sid):
+        temp=self.head
+        prev=None
+        while temp:
+            if temp.sid==sid:
+                if prev is None:
+                    self.head=temp.next
+                else:
+                    prev.next=temp.next
+                print("Record Deleted")
+                return
+            prev=temp
+            temp=temp.next
+
+s=StudentList()
+
+while True:
+    print("\n1.Insert Begin")
+    print("2.Insert End")
+    print("3.Delete")
+    print("4.Search")
+    print("5.Display")
+    print("6.Exit")
+
+    ch=int(input("Enter Choice: "))
+
+    if ch==1:
+        sid=int(input("Enter ID: "))
+        name=input("Enter Name: ")
+        marks=int(input("Enter Marks: "))
+        s.insert_begin(sid,name,marks)
+
+    elif ch==2:
+        sid=int(input("Enter ID: "))
+        name=input("Enter Name: ")
+        marks=int(input("Enter Marks: "))
+        s.insert_end(sid,name,marks)
+
+    elif ch==3:
+        sid=int(input("Enter ID to Delete: "))
+        s.delete(sid)
+
+    elif ch==4:
+        sid=int(input("Enter ID to Search: "))
+        s.search(sid)
+
+    elif ch==5:
+        s.display()
+
+    elif ch==6:
+        break
+
+Sample Output
+
+
+1.Insert Begin
+2.Insert End
+3.Delete
+4.Search
+5.Display
+6.Exit
+
+Enter Choice: 2
+Enter ID: 201
+Enter Name: Kumar
+Enter Marks: 78
+
+Enter Choice: 2
+Enter ID: 202
+Enter Name: Priya
+Enter Marks: 88
+
+Enter Choice: 5
+201 Kumar 78
+202 Priya 88
+
+Enter Choice: 4
+Enter ID to Search: 202
+Record Found: 202 Priya 88
