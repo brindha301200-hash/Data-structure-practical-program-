@@ -1,0 +1,128 @@
+4️⃣ Priority Queue ADT
+program:
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+struct Patient
+{
+    char name[20];
+    int priority;
+};
+
+struct Patient pq[MAX];
+int size = 0;
+
+void insert()
+{
+    char name[20];
+    int priority;
+    int i;
+
+    if(size == MAX)
+    {
+        printf("Queue Overflow\n");
+        return;
+    }
+
+    printf("Enter Patient Name: ");
+    scanf("%s", name);
+    printf("Enter Priority (1=High): ");
+    scanf("%d", &priority);
+
+    i = size - 1;
+
+    while(i >= 0 && pq[i].priority > priority)
+    {
+        pq[i+1] = pq[i];
+        i--;
+    }
+
+    strcpy(pq[i+1].name, name);
+    pq[i+1].priority = priority;
+    size++;
+}
+
+void displayNext()
+{
+    if(size == 0)
+    {
+        printf("No patients in queue\n");
+        return;
+    }
+
+    printf("Next Patient: %s (Priority %d)\n", pq[0].name, pq[0].priority);
+}
+
+void removePatient()
+{
+    int i;
+
+    if(size == 0)
+    {
+        printf("Queue Underflow\n");
+        return;
+    }
+
+    printf("Treated Patient: %s\n", pq[0].name);
+
+    for(i=0;i<size-1;i++)
+    {
+        pq[i] = pq[i+1];
+    }
+
+    size--;
+}
+
+void displayAll()
+{
+    int i;
+
+    if(size == 0)
+    {
+        printf("No patients\n");
+        return;
+    }
+
+    printf("Patient List:\n");
+
+    for(i=0;i<size;i++)
+    {
+        printf("%s (Priority %d)\n", pq[i].name, pq[i].priority);
+    }
+}
+
+int main()
+{
+    int choice;
+
+    while(1)
+    {
+        printf("\n1.Insert Patient\n2.Display Next Patient\n3.Remove Treated Patient\n4.Display All\n5.Exit\n");
+        printf("Enter Choice: ");
+        scanf("%d",&choice);
+
+        switch(choice)
+        {
+            case 1: insert(); break;
+            case 2: displayNext(); break;
+            case 3: removePatient(); break;
+            case 4: displayAll(); break;
+            case 5: return 0;
+            default: printf("Invalid Choice\n");
+        }
+
+Example Output:
+1.Insert Patient
+2.Display Next Patient
+3.Remove Treated Patient
+4.Display All
+5.Exit
+
+Enter Choice: 1
+Enter Patient Name: Ravi
+Enter Priority: 1
+
+Enter Choice: 2
+Next Patient: Ravi (Priority 1)
