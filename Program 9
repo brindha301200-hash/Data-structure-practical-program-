@@ -1,0 +1,75 @@
+Sorting Method
+program 
+# Bubble Sort
+def bubble_sort(arr):
+    a = arr.copy()
+    n = len(a)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if a[j] > a[j+1]:
+                a[j], a[j+1] = a[j+1], a[j]
+    return a
+# Selection Sort
+def selection_sort(arr):
+    a = arr.copy()
+    n = len(a)
+    for i in range(n):
+        min_index = i
+        for j in range(i+1, n):
+            if a[j] < a[min_index]:
+                min_index = j
+        a[i], a[min_index] = a[min_index], a[i]
+    return a
+# Insertion Sort
+def insertion_sort(arr):
+    a = arr.copy()
+    for i in range(1, len(a)):
+        key = a[i]
+        j = i-1
+        while j >= 0 and key < a[j]:
+            a[j+1] = a[j]
+            j -= 1
+        a[j+1] = key
+    return a
+# Radix Sort
+def radix_sort(arr):
+    a = arr.copy()
+    max_num = max(a)
+    exp = 1
+    while max_num // exp > 0:
+        counting_sort(a, exp)
+        exp *= 10
+    return a
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0]*n
+    count = [0]*10
+    for i in arr:
+        index = (i // exp) % 10
+        count[index] += 1
+    for i in range(1,10):
+        count[i] += count[i-1]
+    for i in range(n-1, -1, -1):
+        index = (arr[i] // exp) % 10
+        output[count[index]-1] = arr[i]
+        count[index] -= 1
+    for i in range(n):
+        arr[i] = output[i]
+
+
+# Main Program
+marks = list(map(int, input("Enter student marks separated by space: ").split()))
+
+print("\nBubble Sort Ranked List:", bubble_sort(marks))
+print("Selection Sort Ranked List:", selection_sort(marks))
+print("Insertion Sort Ranked List:", insertion_sort(marks))
+print("Radix Sort Ranked List:", radix_sort(marks))
+
+Output
+Enter student marks separated by space:
+78 92 65 88 70
+
+Bubble Sort Ranked List: [65, 70, 78, 88, 92]
+Selection Sort Ranked List: [65, 70, 78, 88, 92]
+Insertion Sort Ranked List: [65, 70, 78, 88, 92]
+Radix Sort Ranked List: [65, 70, 78, 88, 92]
