@@ -1,0 +1,85 @@
+Expression Evaluation using stack
+C Program:
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char x)
+{
+    stack[++top] = x;
+}
+
+char pop()
+{
+    return stack[top--];
+}
+
+int priority(char x)
+{
+    if(x=='(')
+        return 0;
+    if(x=='+' || x=='-')
+        return 1;
+    if(x=='*' || x=='/')
+        return 2;
+    if(x=='^')
+        return 3;
+    return 0;
+}
+
+int main()
+{
+    char exp[100], postfix[100];
+    int i=0, j=0;
+    char ch;
+
+    printf("Enter Infix Expression: ");
+    scanf("%s", exp);
+
+    while(exp[i] != '\0')
+    {
+        if(isalnum(exp[i]))
+        {
+            postfix[j++] = exp[i];
+        }
+        else if(exp[i] == '(')
+        {
+            push(exp[i]);
+        }
+        else if(exp[i] == ')')
+        {
+            while((ch = pop()) != '(')
+            {
+                postfix[j++] = ch;
+            }
+        }
+        else
+        {
+            while(priority(stack[top]) >= priority(exp[i]))
+            {
+                postfix[j++] = pop();
+            }
+            push(exp[i]);
+        }
+        i++;
+    }
+
+    while(top != -1)
+    {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = '\0';
+
+    printf("Postfix Expression: %s\n", postfix);
+
+    return 0;}
+Input:
+A+B*C
+Output:
+Postfix Expression: ABC*+
