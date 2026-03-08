@@ -1,0 +1,114 @@
+Binary Search Tree BST
+program
+class Node:
+    def __init__(self, book_id):
+        self.book_id = book_id
+        self.left = None
+        self.right = None
+class BST:
+    def insert(self, root, book_id):
+        if root is None:
+            return Node(book_id)
+        if book_id < root.book_id:
+            root.left = self.insert(root.left, book_id)
+        elif book_id > root.book_id:
+            root.right = self.insert(root.right, book_id)
+        return root
+
+    def search(self, root, book_id):
+        if root is None:
+            print("Book not found")
+            return
+        if root.book_id == book_id:
+            print("Book found")
+        elif book_id < root.book_id:
+            self.search(root.left, book_id)
+        else:
+            self.search(root.right, book_id)
+
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.book_id, end=" ")
+            self.inorder(root.right)
+
+    def min_value(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def delete(self, root, book_id):
+        if root is None:
+            return root
+
+        if book_id < root.book_id:
+            root.left = self.delete(root.left, book_id)
+
+        elif book_id > root.book_id:
+            root.right = self.delete(root.right, book_id)
+
+        else:
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+
+            temp = self.min_value(root.right)
+            root.book_id = temp.book_id
+            root.right = self.delete(root.right, temp.book_id)
+
+        return root
+
+
+bst = BST()
+root = None
+
+while True:
+    print("\n1.Insert Book")
+    print("2.Search Book")
+    print("3.Delete Book")
+    print("4.Display Books (Sorted)")
+    print("5.Exit")
+
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        book_id = int(input("Enter Book ID: "))
+        root = bst.insert(root, book_id)
+
+    elif choice == 2:
+        book_id = int(input("Enter Book ID to search: "))
+        bst.search(root, book_id)
+
+    elif choice == 3:
+        book_id = int(input("Enter Book ID to delete: "))
+        root = bst.delete(root, book_id)
+
+    elif choice == 4:
+        print("Books in sorted order:")
+        bst.inorder(root)
+        print()
+
+    elif choice == 5:
+        break
+
+    else:
+        print("Invalid choice")
+
+Example Output:
+1.Insert Book
+2.Search Book
+3.Delete Book
+4.Display Books (Sorted)
+5.Exit
+
+Enter choice: 1
+Enter Book ID: 105
+
+Enter choice: 1
+Enter Book ID: 101
+
+Enter choice: 4
+Books in sorted order:
+101 105
